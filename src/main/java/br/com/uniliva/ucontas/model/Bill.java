@@ -22,29 +22,31 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "TB_CONTA")
-public class Conta {
+@Entity(name = "TB_BILL")
+public class Bill {
 
     @Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name = "COD_CONTA")
-    private Long codigo;
+	@Column(name = "COD_BILL")
+    private Long id;
 
-	@NotNull(message="Campo Obrigatorio!")
-    private String descricao;
+	@NotNull
+	@Column(name = "DESCRIPTION")
+    private String description;
 
-    @NotNull(message="Campo Obrigatorio!")
-    private double valor;
+    @NotNull
+	@Column(name = "VALUE")
+    private double value;
 
     @OneToMany
-    @JoinColumn(name = "codigo")
-    @NotNull(message="Campo Obrigatorio!")
-    private Categoria categoria;
+    @JoinColumn(name = "id")
+    @NotNull
+    private Category category;
 
 
-    @Column(columnDefinition = "DATE")
+    @Column(name = "DATE", columnDefinition = "DATE")
     @JsonFormat(pattern = "dd-MM-yyyy")
-    @NotNull(message="Campo Obrigatorio!")
-    private LocalDate data;
+    @NotNull
+    private LocalDate dateBill;
 
 }

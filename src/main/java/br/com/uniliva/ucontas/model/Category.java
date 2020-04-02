@@ -16,15 +16,16 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "TB_CATEGORIAS")
-public class Categoria {
+@Entity(name = "TB_CATEGORY")
+public class Category {
 
     @Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name = "COD_CATEGORIA")
-    private Long codigo;
+	@Column(name = "COD_CATEGORY")
+    private Long id;
 
-    @NotNull(message="Campo Obrigatorio!")
-    private String nome;
+    @NotNull
+    @Column(name = "NAME")
+    private String name;
 
 }
