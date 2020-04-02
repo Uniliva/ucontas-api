@@ -22,7 +22,7 @@ public class Categoria {
     @Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "COD_CATEGORIA")
-    private String codigo;
+    private Long codigo;
 
     @NotNull(message="Campo Obrigatorio!")
     private String nome;

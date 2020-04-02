@@ -28,7 +28,7 @@ public class Conta {
     @Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "COD_CONTA")
-    private String codigo;
+    private Long codigo;
 
 	@NotNull(message="Campo Obrigatorio!")
     private String descricao;
