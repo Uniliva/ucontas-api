@@ -12,13 +12,19 @@ public class CategoryFixture implements TemplateLoader {
 		Fixture.of(Category.class).addTemplate("valid", new Rule() {
 			{
 				add("id", random(Long.class, range(1L, 500L)));
-				add("name", random("Rent", "Educação", "Recreation", "Food"));
+				add("name", random("Rent", "Education", "Recreation", "Food"));
 			}
 
 		}).addTemplate("invalida", new Rule() {
 			{
 				add("id", null);
 				add("name", null);
+			}
+
+		}).addTemplate("noSaved", new Rule() {
+			{
+				add("id", random(Long.class, range(1L, 500L)));
+				add("name", random("Rent", "Education", "Recreation", "Food"));
 			}
 
 		});

@@ -31,6 +31,15 @@ public class BillFixture implements TemplateLoader{
 				add("dateBill", null);
 			}
 
+		}).addTemplate("noSaved", new Rule() {
+			{
+				add("id", null);
+				add("description", random("Christmas shopping", "Weekly fair", "Barbecue with friends"));
+				add("value", random(Double.class, range(1L, 500L)) );
+				add("category", one(Category.class, "noSaved"));
+				add("dateBill", LocalDate.now().minusDays(2));
+			}
+
 		});
 	}
 }
