@@ -15,7 +15,7 @@ public class CategoryFixture implements TemplateLoader {
 				add("name", random("Rent", "Education", "Recreation", "Food"));
 			}
 
-		}).addTemplate("invalida", new Rule() {
+		}).addTemplate("invalid", new Rule() {
 			{
 				add("id", null);
 				add("name", null);

@@ -26,7 +26,7 @@ public class BillFixture implements TemplateLoader{
 			{
 				add("id", random(Long.class, range(1L, 500L)));
 				add("description",  random("Christmas shopping", "Weekly fair", "Barbecue with friends"));
-				add("value", null);
+				add("value", 0D);
 				add("category", one(Category.class, "valid"));
 				add("dateBill", null);
 			}

@@ -81,7 +81,7 @@ public class CategoryServiceTest {
 	 }
 	 
 	 @Test
-	 public void shouldDeleteByID() {
+	 public void shouldDeleteCategoryByID() {
 		 final Category categoryFixture = Fixture.from(Category.class).gimme("valid");
 		 
 		 doNothing().when(repo).deleteById(any(Long.class));

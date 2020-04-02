@@ -18,7 +18,7 @@ public class CategoryService {
 		return repo.findAll();
 	}
 
-	public Optional<Category> findById(long id) {
+	public Optional<Category> findById(Long id) {
 		return repo.findById(id);
 	}
 

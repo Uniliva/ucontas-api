@@ -17,29 +17,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.com.uniliva.ucontas.business.BillBusiness;
-import br.com.uniliva.ucontas.model.Bill;
+import br.com.uniliva.ucontas.business.CategoryBusiness;
+import br.com.uniliva.ucontas.model.Category;
 
 @RestController
-@RequestMapping("v1/bills")
-public class BillController {
+@RequestMapping("v1/categories")
+public class CategoryController {
 
     @Autowired
-	private BillBusiness business;
+	private CategoryBusiness business;
 
 	@GetMapping
-	public ResponseEntity<List<Bill>> listAll() {
+	public ResponseEntity<List<Category>> listAll() {
 		return ResponseEntity.ok(business.listAll());
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Bill> findById(@PathVariable Long id) {
+	public ResponseEntity<Category> findById(@PathVariable Long id) {
 		return ResponseEntity.ok().body(business.findById(id));
 	}
 	
 	@PostMapping
-	public ResponseEntity<Bill> save(@Valid @RequestBody Bill Bill) {
-		Bill obj = business.save(Bill);
+	public ResponseEntity<Category> save(@Valid @RequestBody Category Category) {
+		Category obj = business.save(Category);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
@@ -51,8 +51,7 @@ public class BillController {
 	}
 	
 	@PutMapping
-	public ResponseEntity<Bill> update(@Valid @RequestBody Bill Bill) {
-		return ResponseEntity.ok(business.update(Bill));
+	public ResponseEntity<Category> update(@Valid @RequestBody Category Category) {
+		return ResponseEntity.ok(business.update(Category));
 	}
-
 }

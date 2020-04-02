@@ -35,35 +35,36 @@ import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
-import br.com.uniliva.ucontas.business.BillBusiness;
+import br.com.uniliva.ucontas.business.CategoryBusiness;
+import br.com.uniliva.ucontas.exception.BusinessException;
 import br.com.uniliva.ucontas.exception.NotFoundException;
 import br.com.uniliva.ucontas.handlers.CustomExceptionHandler;
 import br.com.uniliva.ucontas.handlers.StandardError;
-import br.com.uniliva.ucontas.model.Bill;
+import br.com.uniliva.ucontas.model.Category;
 
 @RunWith(MockitoJUnitRunner.class)
-public class BillControllerTest {
+public class CategoryControllerTest {
 
-    private static final String URL = "/v1/bills";
+	private static final String URL = "/v1/categories";
 
-    @InjectMocks
-	private BillController controller;
+	@InjectMocks
+	private CategoryController controller;
 
 	@Mock
-	private BillBusiness business;
+	private CategoryBusiness business;
 
 	private MockMvc mock;
-	
-    private ObjectMapper mapper;
-    
-    @Before
+
+	private ObjectMapper mapper;
+
+	@Before
 	public void configure() {
 		MockitoAnnotations.initMocks(this);
 		mock = MockMvcBuilders.standaloneSetup(controller).setControllerAdvice(new CustomExceptionHandler()).build();
 		mapper = new ObjectMapper();
-	    mapper.registerModule(new ParameterNamesModule());
-	    mapper.registerModule(new Jdk8Module());
-	    mapper.registerModule(new JavaTimeModule());
+		mapper.registerModule(new ParameterNamesModule());
+		mapper.registerModule(new Jdk8Module());
+		mapper.registerModule(new JavaTimeModule());
 	}
 
 	@BeforeClass
@@ -72,8 +73,8 @@ public class BillControllerTest {
 	}
 
 	@Test
-	public void shouldReturnAllBills() throws Exception {
-		final List<Bill> fixture = Fixture.from(Bill.class).gimme(5, "valid");
+	public void shouldReturnAllCategorys() throws Exception {
+		final List<Category> fixture = Fixture.from(Category.class).gimme(5, "valid");
 		final String jsonResponse = mapper.writeValueAsString(fixture);
 
 		when(business.listAll()).thenReturn(fixture);
@@ -81,55 +82,52 @@ public class BillControllerTest {
 		mock.perform(get(URL).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andDo(print())
 				.andExpect(MockMvcResultMatchers.content().string(jsonResponse));
 	}
-	
-	
+
 	@Test
-	public void shouldReturnBillWhenFindById() throws Exception {
-		final Bill fixture = Fixture.from(Bill.class).gimme("valid");
+	public void shouldReturnCategoryWhenFindById() throws Exception {
+		final Category fixture = Fixture.from(Category.class).gimme("valid");
 		final String jsonResponse = mapper.writeValueAsString(fixture);
 
 		when(business.findById(any(Long.class))).thenReturn(fixture);
 
-		mock.perform(get(URL + "/10").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
-				.andDo(print()).andExpect(MockMvcResultMatchers.content().string(jsonResponse));
-	}
-
-	@Test
-	public void shouldReturnBadRequestWhenFindBillNotExist() throws Exception {
-		final StandardError standardError = new StandardError(400, "Bill not Found");
-		final String jsonResponse = mapper.writeValueAsString(standardError);
-
-		when(business.findById(any(Long.class))).thenThrow(new NotFoundException("Bill not Found"));
-
-		mock.perform(get(URL + "/10").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().is4xxClientError()).andDo(print())
+		mock.perform(get(URL + "/10").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andDo(print())
 				.andExpect(MockMvcResultMatchers.content().string(jsonResponse));
 	}
 
 	@Test
-	public void shouldSaveBill() throws Exception {
-		final Bill fixture = Fixture.from(Bill.class).gimme("valid");
-		final String body = mapper.writeValueAsString(fixture);
+	public void shouldReturnBadRequestWhenFindCategoryNotExist() throws Exception {
+		final StandardError standardError = new StandardError(400, "Category not Found");
+		final String jsonResponse = mapper.writeValueAsString(standardError);
 
-		when(business.save(any(Bill.class))).thenReturn(fixture);
+		when(business.findById(any(Long.class))).thenThrow(new NotFoundException("Category not Found"));
 
-		mock.perform(post(URL).content(body).contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isCreated()).andDo(print())
-				.andExpect(header().string("Location", containsString(URL + "/" + fixture.getId())));
+		mock.perform(get(URL + "/10").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError())
+				.andDo(print()).andExpect(MockMvcResultMatchers.content().string(jsonResponse));
 	}
 
 	@Test
-	public void shouldReturnBadRequestWhenTrySaveInvalidBill() throws Exception {
-		final Bill fixture = Fixture.from(Bill.class).gimme("invalid");
+	public void shouldSaveCategory() throws Exception {
+		final Category fixture = Fixture.from(Category.class).gimme("valid");
 		final String body = mapper.writeValueAsString(fixture);
-		
+
+		when(business.save(any(Category.class))).thenReturn(fixture);
+
+		mock.perform(post(URL).content(body).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated())
+				.andDo(print()).andExpect(header().string("Location", containsString(URL + "/" + fixture.getId())));
+	}
+
+	@Test
+	public void shouldReturnBadRequestWhenTrySaveInvalidCategory() throws Exception {
+		final Category fixture = Fixture.from(Category.class).gimme("invalid");
+		final String body = mapper.writeValueAsString(fixture);
+
 		mock.perform(post(URL).content(body).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is4xxClientError()).andDo(print())
 				.andExpect(MockMvcResultMatchers.content().string(containsString("Validation error")));
 	}
 
 	@Test
-	public void shouldDeleteBill() throws Exception {
+	public void shouldDeleteCategory() throws Exception {
 		final Long codigo = 10L;
 
 		doNothing().when(business).delete(any(Long.class));
@@ -139,12 +137,12 @@ public class BillControllerTest {
 	}
 
 	@Test
-	public void shouldReturnBadRequestWhenTryDeleteBillNonExistent() throws Exception {
-		final StandardError standardError = new StandardError(400, "Bill not found");
+	public void shouldReturnBadRequestWhenTryDeleteCategoryNonExistent() throws Exception {
+		final StandardError standardError = new StandardError(400, "Category not found");
 		final Long codigo = 120L;
 		final String retorno = mapper.writeValueAsString(standardError);
 
-		doThrow(new NotFoundException("Bill not found")).when(business).delete(any(Long.class));
+		doThrow(new NotFoundException("Category not found")).when(business).delete(any(Long.class));
 
 		mock.perform(delete(URL + "/" + codigo).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is4xxClientError()).andDo(print())
@@ -152,15 +150,28 @@ public class BillControllerTest {
 
 	}
 
+	@Test
+	public void shouldReturnExceptionWhenDeleteCategoryInUse() throws Exception {
+		final StandardError standardError = new StandardError(400, "You cannot delete a category being used");
+		final Long codigo = 1L;
+		final String retorno = mapper.writeValueAsString(standardError);
 
+		doThrow(new BusinessException("You cannot delete a category being used")).when(business)
+				.delete(any(Long.class));
+
+		mock.perform(delete(URL + "/" + codigo).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is4xxClientError()).andDo(print())
+				.andExpect(MockMvcResultMatchers.content().string(retorno));
+
+	}
 
 	@Test
-	public void shouldUpdateBill() throws Exception {
+	public void shouldUpdateCategory() throws Exception {
 
-		final Bill fixture = Fixture.from(Bill.class).gimme("valid");
+		final Category fixture = Fixture.from(Category.class).gimme("valid");
 		final String body = mapper.writeValueAsString(fixture);
 
-		when(business.update(any(Bill.class))).thenReturn(fixture);
+		when(business.update(any(Category.class))).thenReturn(fixture);
 
 		mock.perform(put(URL).content(body).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 				.andDo(print()).andExpect(MockMvcResultMatchers.content().string(body));
