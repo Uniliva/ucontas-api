@@ -1,5 +1,6 @@
 package br.com.uniliva.ucontas.repository;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
@@ -24,14 +25,12 @@ public class CategoryRepositoryTest {
 	@Autowired
 	private CategoryRepository repo;
 
-
 	@BeforeClass
 	public static void configureFixture() {
-		FixtureFactoryLoader.loadTemplates("br.com.uniliva.ucontas.fixture");		
+		FixtureFactoryLoader.loadTemplates("br.com.uniliva.ucontas.fixture");
 	}
-	
+
 	private final Integer QTD_MODEL_SALVE = 2;
-	
 
 	@Before
 	public void configureDB() {
@@ -45,15 +44,27 @@ public class CategoryRepositoryTest {
 	}
 
 	@Test
-	public void shouldListAllBills() {
+	public void shouldListAllCategories() {
 
 		List<Category> categories = repo.findAll();
 
 		assertEquals(QTD_MODEL_SALVE, categories.size());
 	}
 	
+	@Test
+	public void shouldSaveCategory() {
+		
+		Category fixture = Fixture.from(Category.class).gimme("noSaved");
+
+		Category categorySave = repo.save(fixture);
+
+		assertNotNull(categorySave.getId());
+		assertEquals(fixture.getName(), categorySave.getName());
+	}
+
 	/**
-	 * Classe de teste apenas para demostração, não estou usando nenhum recuso adicionado por mim no repository, sendo assim sendo desnecessário testa-lo
+	 * Classe de teste apenas para demostração, não estou usando nenhum recurso
+	 * adicionado por mim no repository, sendo assim sendo desnecessário testa-lo
 	 */
 
 }
