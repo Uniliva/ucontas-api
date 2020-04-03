@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -22,11 +23,12 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@SequenceGenerator(name="billSeq", sequenceName="SEQ_CF_COD_BILL", allocationSize=1)
 @Entity(name = "TB_BILL")
 public class Bill {
 
     @Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="billSeq")
 	@Column(name = "COD_BILL")
     private Long id;
 
@@ -44,7 +46,7 @@ public class Bill {
     private Category category;
 
 
-    @Column(name = "DATE", columnDefinition = "DATE")
+    @Column(name = "DATE_BILL", columnDefinition = "DATE")
     @JsonFormat(pattern = "dd-MM-yyyy")
     @NotNull
     private LocalDate dateBill;
