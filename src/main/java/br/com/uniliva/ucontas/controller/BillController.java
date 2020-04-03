@@ -20,9 +20,12 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.uniliva.ucontas.business.BillBusiness;
 import br.com.uniliva.ucontas.model.Bill;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("v1/bills")
+@Api(value = "API of bills")
 @CrossOrigin(origins = "*")
 public class BillController {
 
@@ -30,16 +33,19 @@ public class BillController {
 	private BillBusiness business;
 
 	@GetMapping
+	@ApiOperation(value = "Returns a list of all bills")
 	public ResponseEntity<List<Bill>> listAll() {
 		return ResponseEntity.ok(business.listAll());
 	}
 	
 	@GetMapping("/{id}")
+	@ApiOperation(value = "Search for a bill using the code")
 	public ResponseEntity<Bill> findById(@PathVariable Long id) {
 		return ResponseEntity.ok().body(business.findById(id));
 	}
 	
 	@PostMapping
+	@ApiOperation(value = "Save a bill")
 	public ResponseEntity<Bill> save(@Valid @RequestBody Bill Bill) {
 		Bill obj = business.save(Bill);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
@@ -47,12 +53,14 @@ public class BillController {
 	}
 
 	@DeleteMapping("/{id}")
+	@ApiOperation(value = "Remove a bill using the code")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		business.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 	
 	@PutMapping
+	@ApiOperation(value = "Update a bill")
 	public ResponseEntity<Bill> update(@Valid @RequestBody Bill Bill) {
 		return ResponseEntity.ok(business.update(Bill));
 	}
