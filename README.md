@@ -7,7 +7,16 @@ Projeto simples para demostrar a construção de rest api, testes com banco em m
 
 ---
 
-## Executando o projeto 
+## Acessando o projeto 
+
+### Heroku
+
+Para facilitar o acesso, esse projeto foi ajustado, através da branch _heroku-version_, para ser executado no heroku:
+
+- ucontas-front: https://ucontas-front.herokuapp.com/
+- swagger ucontas-api: https://ucontas-api.herokuapp.com/swagger-ui.html
+
+---
 
 ### Localmente
 
@@ -52,6 +61,11 @@ mvn spring-boot:run
 #swagger
 http://localhost:9090/swagger-ui.html
 ```
+---
+
+### Com docker 
+
+Você também, pode usar essa aplicação através do docker, para isso acesse : https://github.com/Uniliva/ucontas-installer e siga as intruções para instalação.
 
 ---
 ---
