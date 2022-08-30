@@ -9,6 +9,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,6 +40,7 @@ public class BillRepositoryTest {
 
 	@Before
 	public void configureDB() {
+		repo.deleteAll();
 		final List<Category> categoriesFixture = Fixture.from(Category.class).gimme(QTD_MODEL_SALVE, "noSaved");
 		List<Category> categoriesSaved = repoCategory.saveAll(categoriesFixture);
 
@@ -59,7 +62,7 @@ public class BillRepositoryTest {
 
 	@Test
 	public void shouldRemoveById() {
-		Long codigoBill = 1L;
+		Long codigoBill = 5L;
 		repo.deleteById(codigoBill);
 		
 		long total = repo.count();

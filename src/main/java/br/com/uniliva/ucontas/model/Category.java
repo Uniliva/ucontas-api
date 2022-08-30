@@ -22,7 +22,7 @@ import lombok.Setter;
 public class Category {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="categorySeq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "COD_CATEGORY")
     private Long id;
 

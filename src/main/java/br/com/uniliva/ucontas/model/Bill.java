@@ -28,7 +28,7 @@ import lombok.Setter;
 public class Bill {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="billSeq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "COD_BILL")
     private Long id;
 

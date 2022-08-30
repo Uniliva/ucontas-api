@@ -9,6 +9,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,15 +32,15 @@ public class CategoryRepositoryTest {
 		FixtureFactoryLoader.loadTemplates("br.com.uniliva.ucontas.fixture");
 	}
 
-	private final Integer QTD_MODEL_SALVE = 2;
+	private final Integer QTD_MODEL_SALVE = 5;
 
-	@Before
+	@BeforeEach
 	public void configureDB() {
 		final List<Category> fixture = Fixture.from(Category.class).gimme(QTD_MODEL_SALVE, "noSaved");
 		repo.saveAll(fixture);
 	}
 
-	@After
+	@AfterEach
 	public void cleanDB() {
 		repo.deleteAll();
 	}
