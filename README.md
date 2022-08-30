@@ -22,22 +22,8 @@ Para facilitar o acesso, esse projeto foi ajustado, através da branch _heroku-v
 
 - Passo 1: Base de dados
 
-Para executar o projeto localmente e necessário ter o banco oracle 12c, configurado assim:
+Para executar o projeto localmente e necessário ter o banco postgres
 
-```shellscript
-hostname: localhost
-port: 1521
-sid: ORCLCDB
-service name: ORCLCDB
-
-#  Usuario system
-username: system
-password: unisenha
-
-# Usuario uconta_user
-username: uconta_user
-password: unisenha
-```
 
 **Obs:** Caso queira utilizar o banco em outro endereço/porta, altere os dados em _application.properties_.
 
